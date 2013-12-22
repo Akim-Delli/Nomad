@@ -47,8 +47,8 @@ module.exports = function( config, mongoose, nodemailer) {
 				smtpTransport.sendMail({
 					from: 'thisapp@example.com',
 					to: doc.email,
-					subject: 'SocialNet Password request',
-					text: 'Click here to reset yor password: ' + resetPasswordUrl
+					subject: 'Nomad Password request',
+					text: 'Click here to reset your password: ' + resetPasswordUrl
 				}, function forgotPasswordResult(err) {
 					if (err) {
 						callback(false);
