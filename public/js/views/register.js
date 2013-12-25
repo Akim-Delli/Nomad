@@ -1,5 +1,5 @@
 define(['text!templates/register.html'], function(registerTemplate) {
-	var registerView = Backbone.view.extend({
+	var registerView = Backbone.View.extend({
 		el: $('#content'),
 
 		events: {
@@ -8,8 +8,8 @@ define(['text!templates/register.html'], function(registerTemplate) {
 
 		register: function() {
 			$.post('/register', {
-				firstname: $('input[name=firstName').val(),
-				lastName: $('input[name=lastname').val(),
+				firstname: $('input[name=firstName]').val(),
+				lastName: $('input[name=lastName]').val(),
 				email: $('input[name=email]').val(),
 				password: $('input[name=password]').val(),
 			}, function(data){

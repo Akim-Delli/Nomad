@@ -37,7 +37,7 @@ app.post('/login', function(req,res) {
 	var email = req.param('email', null);
 	var password = req.param('password', null);
 
-	if (null === email || email.length < 1 || null === password || password.lenght < 1) {
+	if (null === email || email.length < 1 || null === password || password.length < 1) {
 		res.send(400);
 		return;
 	}
@@ -56,7 +56,7 @@ app.post('/login', function(req,res) {
 });
 
 app.post('/register', function(req,res) {
-	var firstname = req.param('firstName', '');
+	var firstName = req.param('firstName', '');
 	var lastName = req.param('lastName','');
 	var email = req.param('email', null);
 	var password = req.param('password', null);
@@ -114,5 +114,11 @@ app.post('/resetPassword', function(req, res) {
 	res.render('resetPasswordSuccess.jade');
 });
 
+app.get('/account/:id', function(req, res) {
+	var accountId = req.params.id === 'me'	? req.session.accountId	: req.param.id;
+	Account.findOne({_id:accountId}, function( account) {
+		res.send(account);
+	});
+});
 
 app.listen(8080);

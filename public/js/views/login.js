@@ -1,5 +1,5 @@
 define(['text!templates/login.html'], function(loginTemplate) {
-	var registerView = Backbone.view.extend({
+	var loginView = Backbone.View.extend({
 		el: $('#content'),
 
 		events: {

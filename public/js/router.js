@@ -1,6 +1,6 @@
 define(['views/index', 'views/register', 'views/login', 'views/forgotpassword'],
 	function(IndexView, RegisterView, LoginView, ForgotPasswordView) {
-		var NomadRouter = backbone.Router.extend({
+		var NomadRouter = Backbone.Router.extend({
 			currentView: null,
 
 			routes: {

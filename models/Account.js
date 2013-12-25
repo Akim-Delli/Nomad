@@ -1,7 +1,7 @@
 module.exports = function( config, mongoose, nodemailer) {
 	var crypto = require('crypto');
 
-	var AccountSchema = new mongoose.schema({
+	var AccountSchema = new mongoose.Schema({
 		email:      { type: String, unique: true},
 		password:   { type: String },
 		name: {
@@ -68,11 +68,11 @@ module.exports = function( config, mongoose, nodemailer) {
 		});
 	};
 
-	var register = function(email, password, firstname, lastname) {
+	var register = function(email, password, firstName, lastName) {
 		var shaSum = crypto.createHash('sha256');
 		shaSum.update(password);
 
-		console.log('Registering email' + email);
+		console.log('Registering ' + email);
 		var user = new Account({
 			email: email,
 			name: {
