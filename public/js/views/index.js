@@ -1,10 +1,10 @@
-define(['NomadView', 'text!templates/index.html', 'view/status', 'models/status'],
+define(['NomadView', 'text!templates/index.html', 'views/status', 'models/Status'],
 	function(NomadView, indexTemplate, StatusView, Status) {
 	var indexView = NomadView.extend({
 		el: $('#content'),
 
 		events: {
-			"submit form" : "upadteStatus"
+			"submit form" : "updateStatus"
 		},
 
 		initialize: function() {

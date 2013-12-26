@@ -1,5 +1,5 @@
 define(['models/Status'], function(Status) {
-	var StatusCollection = Backbone.collection.extend({
+	var StatusCollection = Backbone.Collection.extend({
 		model: Status
 	});
 
