@@ -1,5 +1,5 @@
-define(['views/index', 'views/register', 'views/login', 'views/forgotpassword'],
-	function(IndexView, RegisterView, LoginView, ForgotPasswordView) {
+define(['views/index', 'views/register', 'views/login', 'views/forgotpassword', 'views/profile', 'models/Account', 'models/StatusCollection'],
+	function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView, Account, StatusCollection) {
 		var NomadRouter = Backbone.Router.extend({
 			currentView: null,
 
@@ -7,7 +7,8 @@ define(['views/index', 'views/register', 'views/login', 'views/forgotpassword'],
 				"index": "index",
 				"login": "login",
 				"register": "register",
-				"forgotpassword": "forgotpassword"
+				"forgotpassword": "forgotpassword",
+				"profile/:id": "profile"
 			},
 
 			changeView: function(view) {
@@ -19,7 +20,12 @@ define(['views/index', 'views/register', 'views/login', 'views/forgotpassword'],
 			},
 
 			index: function() {
-				this.changeView(new IndexView());
+				var StatusCollection = new StatusCollection();
+				StatusCollection.url = '/accounts/me/activity';
+				this.changeView(new IndexView({
+					collection: StatusCollection
+				}));
+				statusCollection.fetch();
 			},
 
 			login: function() {
@@ -32,6 +38,12 @@ define(['views/index', 'views/register', 'views/login', 'views/forgotpassword'],
 
 			register: function() {
 				this.changeView(new RegisterView());
+			},
+
+			profile: function(id) {
+				var model = new Account({id:id});
+				this.changeView(new ProfileView({model:model}));
+				model.fetch();
 			}
 		});
 

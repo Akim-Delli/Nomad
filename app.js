@@ -6,16 +6,18 @@ var express = require('express');
 var app = express();
 var nodemailer = require('nodemailer');
 var MemoryStore = require('connect').session.MemoryStore;
+var dbPath = 'mongodb://localhost/nodebackbone';
 
 // Import the data layer
 var mongoose = require('mongoose');
-
 var config = {
 	mail: require('./config/mail')
 };
 
-// Import the accounts
-var Account = require('./models/Account')(config,  mongoose, nodemailer);
+// Import the models
+var models = {
+	Account: require('./models/Account')(config, mongoose, nodemailer)
+};
 
 app.configure(function(){
 	app.set('view engine','jade');
@@ -25,11 +27,13 @@ app.configure(function(){
 	app.use(express.cookieParser());
 	app.use(express.session(
 		{secret: "Nomad secret key", store: new MemoryStore()}));
-	mongoose.connect('mongodb://localhost/nodebackbone');
+	mongoose.connect(dbPath, function onMongooseError(err){
+		if (err) throw err;
+	});
 });
 
 app.get('/', function(req, res){
-	res.render("index.jade", {layout: false});
+	res.render('index.jade', {layout: false});
 });
 
 app.post('/login', function(req,res) {
@@ -44,15 +48,16 @@ app.post('/login', function(req,res) {
 
 	//!! registration is going to get fired off and handled
 	//!!even after the user received an OK response from the server.
-	Account.login(email, password, function(success) {
+	models.Account.login(email, password, function(success) {
 		if(!success) {
 			res.send(401);
 			return;
 		}
 		console.log('login was successful');
+		req.session.loggedIn = true;
+		req.session.accountId = account._id;
 		res.send(200);
 	});
-	res.send(200);
 });
 
 app.post('/register', function(req,res) {
@@ -68,7 +73,7 @@ app.post('/register', function(req,res) {
 
 	//!! registration is going to get fired off and handled
 	//!!even after the user received an OK response from the server.
-	Account.register(email, password, firstName, lastName);
+	models.Account.register(email, password, firstName, lastName);
 	res.send(200);
 });
 
@@ -81,6 +86,49 @@ app.get('/account/authenticated', function(req, res){
 	}
 });
 
+app.get('/account/:id/activity', function(req, res) {
+	var accountId = req.params.id === 'me'	? req.session.accountId	: req.param.id;
+	models.Account.findById(accountId, function( account) {
+		res.send(account.activity);
+	});
+	res.send(200);
+});
+
+app.get('/account/:id/status', function(req, res) {
+	var accountId = req.params.id === 'me'	? req.session.accountId	: req.param.id;
+	models.Account.findById(accountId, function( account) {
+		res.send(account.status);
+	});
+	res.send(200);
+});
+
+app.post('/account/:id/status', function(req, res) {
+	var accountId = req.params.id === 'me'	? req.session.accountId	: req.param.id;
+	models.Account.findById(accountId, function( account) {
+		var status = {
+			name: account_name,
+			status: req.param('status', '')
+		};
+		account.status.push(status);
+
+		//push the status to all friend
+		account.activity.push(status);
+		account.save(function(err) {
+			if (err) {
+				console.log('Error saving account: ' + err);
+			}
+		});
+	});
+	res.send(200);
+});
+
+app.get('/account/:id', function(req, res) {
+	var accountId = req.params.id === 'me'	? req.session.accountId	: req.param.id;
+	models.Account.findById(accountId, function( account) {
+		res.send(account);
+	});
+});
+
 app.post('/forgotpassword', function(req,res) {
 	var hostname = req.headers.host;
 	var resetPasswordUrl = 'http://' + hostname + '/resetPassword';
@@ -90,7 +138,7 @@ app.post('/forgotpassword', function(req,res) {
 		return;
 	}
 
-	Account.forgotPassword(email, resetPasswordUrl, function(success) {
+	models.Account.forgotPassword(email, resetPasswordUrl, function(success) {
 		if(!success) {
 			res.send(200);
 		} else {
@@ -109,16 +157,10 @@ app.post('/resetPassword', function(req, res) {
 	var accountId = req.param('accountId', null);
 	var password = req.param('password', null);
 	if(null !== accountId && null !== password ) {
-		Account.changePassword(accountId, password);
+		models.Account.changePassword(accountId, password);
 	}
 	res.render('resetPasswordSuccess.jade');
 });
 
-app.get('/account/:id', function(req, res) {
-	var accountId = req.params.id === 'me'	? req.session.accountId	: req.param.id;
-	Account.findOne({_id:accountId}, function( account) {
-		res.send(account);
-	});
-});
-
 app.listen(8080);
+console.log('Listening on port 8080');

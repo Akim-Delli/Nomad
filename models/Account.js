@@ -1,6 +1,14 @@
 module.exports = function( config, mongoose, nodemailer) {
 	var crypto = require('crypto');
 
+	var Status =new mongoose.Schema({
+		name: {
+			first: { type: String},
+			last: { type: String}
+		},
+		status: { type: String}
+	});
+
 	var AccountSchema = new mongoose.Schema({
 		email:      { type: String, unique: true},
 		password:   { type: String },
@@ -14,7 +22,9 @@ module.exports = function( config, mongoose, nodemailer) {
 			year:   { type: Number}
 		},
 		photoUrl:   { type: String },
-		biography:  { type: String }
+		biography:  { type: String },
+		status:     [Status], // My own status updates only
+		activity:   [Status]  // All status updates including friends
 	});
 
 	var Account = mongoose.model('Account', AccountSchema);
