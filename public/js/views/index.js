@@ -40,5 +40,5 @@ define(['NomadView', 'text!templates/index.html', 'views/status', 'models/Status
 		}
 	});
 
-	return new indexView();
+	return indexView();
 });
