@@ -7,7 +7,7 @@ define(['text!templates/login.html'], function(loginTemplate) {
 		},
 
 		register: function() {
-			$.post('/register', {
+			$.post('/login', {
 				email: $('input[name=firstName').val(),
 				password: $('input[name=lastname').val(),
 			}, function(data){
