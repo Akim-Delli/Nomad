@@ -21,7 +21,7 @@ real-time location tracker
 <dt><strong>Underscore.js</strong>
 
 <dt><strong>jQuery</strong></dt>
-<dd>jQuery is used by Backbone to support events and templating. Version used in the book is 1.9.1.</dd>
+<dd>jQuery is used by Backbone to support events and templating. Version used is 1.9.1.</dd>
 
 <dt><strong>Require.js</strong></dt>
 <dd>Require is used to control asset loading for the large number of script files used in the project. Version used is 2.1.5.</dd>
