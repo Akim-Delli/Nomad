@@ -20,10 +20,11 @@ define(['views/index', 'views/register', 'views/login', 'views/forgotpassword', 
 			},
 
 			index: function() {
-				var StatusCollection = new StatusCollection();
-				StatusCollection.url = '/accounts/me/activity';
+				console.log(IndexView);
+				var statusCollection = new StatusCollection();
+				statusCollection.url = '/accounts/me/activity';
 				this.changeView(new IndexView({
-					collection: StatusCollection
+					collection: statusCollection
 				}));
 				statusCollection.fetch();
 			},
