@@ -117,6 +117,7 @@ app.post('/accounts/:id/status', function(req, res) {
 			}
 		});
 	});
+	res.send(200);
 });
 
 app.get('/accounts/:id', function(req, res) {
