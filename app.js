@@ -91,7 +91,6 @@ app.get('/accounts/:id/activity', function(req, res) {
 	models.Account.findById(accountId, function( account) {
 		res.send(account.activity);
 	});
-	res.send(200);
 });
 
 app.get('/accounts/:id/status', function(req, res) {
