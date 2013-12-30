@@ -4,7 +4,9 @@ require.config({
 		Underscore: '/js/libs/underscore',
 		Backbone: '/js/libs/backbone',
 		text: '/js/libs/text',
-		templates: '../templates'
+		templates: '../templates',
+
+		NomadView: '/js/NomadView'
 	},
 	shim: {
 		'Backbone': ['Underscore', 'jQuery'],

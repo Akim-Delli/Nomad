@@ -12,7 +12,7 @@ define(['views/index', 'views/register', 'views/login', 'views/forgotpassword', 
 			},
 
 			changeView: function(view) {
-				if( null!== this.currentView) {
+				if( null != this.currentView) {
 					this.currentView.undelegateEvents();
 				}
 				this.currentView = view;
@@ -20,10 +20,10 @@ define(['views/index', 'views/register', 'views/login', 'views/forgotpassword', 
 			},
 
 			index: function() {
-				var StatusCollection = new StatusCollection();
-				StatusCollection.url = '/accounts/me/activity';
+				var statusCollection = new StatusCollection();
+				statusCollection.url = '/accounts/me/activity';
 				this.changeView(new IndexView({
-					collection: StatusCollection
+					collection: statusCollection
 				}));
 				statusCollection.fetch();
 			},

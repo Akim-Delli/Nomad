@@ -33,7 +33,7 @@ app.configure(function(){
 });
 
 app.get('/', function(req, res){
-	res.render('index.jade', {layout: false});
+	res.render('index.jade');
 });
 
 app.post('/login', function(req,res) {
