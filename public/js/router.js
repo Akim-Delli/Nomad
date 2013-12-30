@@ -20,7 +20,6 @@ define(['views/index', 'views/register', 'views/login', 'views/forgotpassword', 
 			},
 
 			index: function() {
-				console.log(IndexView);
 				var statusCollection = new StatusCollection();
 				statusCollection.url = '/accounts/me/activity';
 				this.changeView(new IndexView({

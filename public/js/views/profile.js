@@ -1,4 +1,4 @@
-define(['NomadView', 'text!templates/profile.html','text!templates/status.html', 'models/Status', 'views/Status'],
+define(['NomadView', 'text!templates/profile.html','text!templates/status.html', 'models/Status', 'views/status'],
 		function( NomadView, profielTemplate,	statusTemplate, Status, StatusView) {
 			var profileView = NomadView.extend({
 				el: $('#content'),

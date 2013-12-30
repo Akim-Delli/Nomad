@@ -19,9 +19,9 @@ define(['NomadView', 'text!templates/index.html', 'views/status', 'models/Status
 			});
 		},
 
-		onStatusAdded: function() {
+		onStatusAdded: function(status) {
 			var statusHtml = (new StatusView({ model: status})).render().el;
-			$statusHtml.prependTo('.status_list').hide.fadeIn('slow');
+			$(statusHtml).prependTo('.status_list').hide().fadeIn('slow');
 		},
 
 		updateStatus: function() {
