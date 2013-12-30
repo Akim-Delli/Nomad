@@ -13,7 +13,6 @@ var mongoose = require('mongoose');
 var config = {
 	mail: require('./config/mail')
 };
-
 // Import the models
 var models = {
 	Account: require('./models/Account')(config, mongoose, nodemailer)
@@ -48,8 +47,8 @@ app.post('/login', function(req,res) {
 
 	//!! registration is going to get fired off and handled
 	//!!even after the user received an OK response from the server.
-	models.Account.login(email, password, function(success) {
-		if(!success) {
+	models.Account.login(email, password, function(account) {
+		if(!account) {
 			res.send(401);
 			return;
 		}
@@ -86,7 +85,8 @@ app.get('/account/authenticated', function(req, res){
 	}
 });
 
-app.get('/account/:id/activity', function(req, res) {
+app.get('/accounts/:id/activity', function(req, res) {
+	console.log(req.session.accountId);
 	var accountId = req.params.id === 'me'	? req.session.accountId	: req.param.id;
 	models.Account.findById(accountId, function( account) {
 		res.send(account.activity);
@@ -94,19 +94,18 @@ app.get('/account/:id/activity', function(req, res) {
 	res.send(200);
 });
 
-app.get('/account/:id/status', function(req, res) {
+app.get('/accounts/:id/status', function(req, res) {
 	var accountId = req.params.id === 'me'	? req.session.accountId	: req.param.id;
 	models.Account.findById(accountId, function( account) {
 		res.send(account.status);
 	});
-	res.send(200);
 });
 
-app.post('/account/:id/status', function(req, res) {
+app.post('/accounts/:id/status', function(req, res) {
 	var accountId = req.params.id === 'me'	? req.session.accountId	: req.param.id;
 	models.Account.findById(accountId, function( account) {
 		var status = {
-			name: account_name,
+			name: account.name,
 			status: req.param('status', '')
 		};
 		account.status.push(status);
@@ -119,10 +118,9 @@ app.post('/account/:id/status', function(req, res) {
 			}
 		});
 	});
-	res.send(200);
 });
 
-app.get('/account/:id', function(req, res) {
+app.get('/accounts/:id', function(req, res) {
 	var accountId = req.params.id === 'me'	? req.session.accountId	: req.param.id;
 	models.Account.findById(accountId, function( account) {
 		res.send(account);
