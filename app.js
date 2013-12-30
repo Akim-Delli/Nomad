@@ -13,7 +13,6 @@ var mongoose = require('mongoose');
 var config = {
 	mail: require('./config/mail')
 };
-
 // Import the models
 var models = {
 	Account: require('./models/Account')(config, mongoose, nodemailer)
@@ -56,7 +55,6 @@ app.post('/login', function(req,res) {
 		console.log('login was successful');
 		req.session.loggedIn = true;
 		req.session.accountId = account._id;
-		console.log(req.session.accountId);
 		res.send(200);
 	});
 });
@@ -88,6 +86,7 @@ app.get('/account/authenticated', function(req, res){
 });
 
 app.get('/accounts/:id/activity', function(req, res) {
+	console.log(req.session.accountId);
 	var accountId = req.params.id === 'me'	? req.session.accountId	: req.param.id;
 	models.Account.findById(accountId, function( account) {
 		res.send(account.activity);
@@ -100,7 +99,6 @@ app.get('/accounts/:id/status', function(req, res) {
 	models.Account.findById(accountId, function( account) {
 		res.send(account.status);
 	});
-	res.send(200);
 });
 
 app.post('/accounts/:id/status', function(req, res) {
@@ -120,7 +118,6 @@ app.post('/accounts/:id/status', function(req, res) {
 			}
 		});
 	});
-	res.send(200);
 });
 
 app.get('/accounts/:id', function(req, res) {
