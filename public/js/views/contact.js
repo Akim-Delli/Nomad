@@ -1,5 +1,5 @@
 define(['NomadView', 'text!templates/contact.html'],
-	function(NoamdView, contactTemplate) {
+	function(NomadView, contactTemplate) {
 		var contactView = NomadView.extend({
 			addButton: false,
 
@@ -34,13 +34,14 @@ define(['NomadView', 'text!templates/contact.html'],
 						contactId: this.model.get('accountId')
 					}}).done(function onSuccess() {
 						$responseArea.text('Contact Removed');
-					}).fail(function on Error() {
+					}).fail(function onError() {
 						$responseArea.text('Could not remove contact');
 					});
-				});
+			
 			},
 
-			initialize: function() {
+			initialize: function( options) {
+				this.options = options || {};
 				//set the addButton variable in case it has been added in the contsructor
 				if (this.options.addButton) {
 					this.addButton = this.options.addButton;
@@ -52,11 +53,12 @@ define(['NomadView', 'text!templates/contact.html'],
 			},
 
 			render: function() {
-				$(this.el)html(_.template(contactTemplate, {
+				$(this.el).html(_.template(contactTemplate, {
 					model: this.model.toJSON(),
 					addButton: this.addButton,
 					removeButton: this.removeButton
 				}));
+				return this;
 			}
 		});
 

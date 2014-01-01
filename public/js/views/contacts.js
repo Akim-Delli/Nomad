@@ -14,7 +14,7 @@ function(NomadView, ContactView, conctactsTemplate) {
 		renderCollection: function(collection) {
 			collection.each(function(contact) {
 				var statusHtml = (new ContactView( 
-									{ ContactButton : true, model: contact }
+									{ removeButton : true, model: contact }
 									)).render().el;
 				$(statusHtml).appendTo('.contacts_list');
 			});
