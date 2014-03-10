@@ -1,4 +1,7 @@
+<% if ( typeof(model.name) != 'undefined'  && model.name !== null) { %>
 <h1><%= model.name.first %> <%= model.name.last %></h1>
+<% }%>
+
 
 <% if ( !addButton ) { %>
   <p><a href="#profile/<%=model.accountId%>">View</p>

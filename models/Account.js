@@ -124,7 +124,10 @@ module.exports = function( config, mongoose, nodemailer) {
 
 	var addContact = function(account, addcontact) {
 		contact = {
-			name: addcontact._id,
+			name: {
+				first: addcontact.name.first,
+				last:  addcontact.name.last
+			},
 			accountId: addcontact._id,
 			added: new Date(),
 			updated: new Date()
@@ -142,22 +145,24 @@ module.exports = function( config, mongoose, nodemailer) {
 		if ( null === account.contacts ) return;
 
 		account.contacts.forEach (function(contact) {
-			if ( contact.accountId === contactId) {
+			if ( contact.accountId == contactId) {
 				account.contacts.remove(contact);
 			}
 		});
+		account.save();
 	};
 
 	var hasContact = function(account, contactId) {
 		if( null === account.contacts ) return false;
 
 		account.contacts.forEach(function(contact) {
-			if( contact.accountId === contactId ){
+			if( contact.accountId == contactId ){
 				return true;			
 			}
 		});
 		return false;
 	};
+
 
 	return {
 		findById: findById,

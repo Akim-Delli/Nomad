@@ -3,6 +3,8 @@ define(['views/index', 'views/register', 'views/login', 'views/forgotpassword', 
 		var NomadRouter = Backbone.Router.extend({
 			currentView: null,
 
+			socketEvents: _.extend({}, Backbone.Events),
+
 			routes: {
 				"addcontact": "addcontact",
 				"index": "index",
@@ -31,7 +33,7 @@ define(['views/index', 'views/register', 'views/login', 'views/forgotpassword', 
 			},
 
 			login: function() {
-				this.changeView(new LoginView());
+				this.changeView(new LoginView( {socketEvents: this.socketEvents}));
 			},
 
 			forgotpassword: function() {
@@ -45,10 +47,10 @@ define(['views/index', 'views/register', 'views/login', 'views/forgotpassword', 
 			profile: function(id) {
 				var model = new Account({id:id});
 				this.changeView(new ProfileView({model:model}));
-				model.fetch();
+				model.fetch({success : function(){console.info('fetched Profile');}});
 			},
 
-			 addcontact: function() {
+			addcontact: function() {
       			this.changeView(new AddContactView());
     		},
 
@@ -59,7 +61,9 @@ define(['views/index', 'views/register', 'views/login', 'views/forgotpassword', 
 				this.changeView(new ContactsView({
 					collection: contactsCollection
 				}));
-				contactsCollection.fetch();
+				contactsCollection.fetch({success : function(collection, response, options){console.info('Fetch the contacts collection successfully');},
+			                              error: function(collection, response, options){console.log('error occurred!');}
+			    });
 			}
 		});
 

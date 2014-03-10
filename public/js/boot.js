@@ -5,6 +5,8 @@ require.config({
 		Backbone: '/js/libs/backbone',
 		text: '/js/libs/text',
 		templates: '../templates',
+		Sockets: '/socket.io/socket.io',
+		models: 'models',
 
 		NomadView: '/js/NomadView'
 	},
